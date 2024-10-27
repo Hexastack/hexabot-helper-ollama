@@ -8,6 +8,7 @@
 
 import { HelperSetting } from '@/helper/types';
 import { SettingType } from '@/setting/schemas/types';
+import { HyphenToUnderscore } from '@/utils/types/extension';
 
 export const OLLAMA_HELPER_NAME = 'ollama-helper';
 

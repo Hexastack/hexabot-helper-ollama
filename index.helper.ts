@@ -8,7 +8,7 @@
 
 import { Injectable, OnApplicationBootstrap } from '@nestjs/common';
 import { OnEvent } from '@nestjs/event-emitter';
-import { Ollama } from 'ollama';
+import { Ollama, Options } from 'ollama';
 
 import { AnyMessage } from '@/chat/schemas/types/message';
 import { HelperService } from '@/helper/helper.service';
@@ -18,6 +18,11 @@ import { Setting } from '@/setting/schemas/setting.schema';
 import { SettingService } from '@/setting/services/setting.service';
 
 import { OLLAMA_HELPER_NAME } from './settings';
+
+type OllamaOptions = Omit<
+  Settings['ollama_helper'],
+  'api_url' | 'model' | 'keep_alive'
+>;
 
 @Injectable()
 export default class OllamaLlmHelper
@@ -55,6 +60,42 @@ export default class OllamaLlmHelper
   }
 
   /**
+   * Convert settings to options
+   * @param settings Ollama Settings
+   * @returns Ollama Options Object
+   */
+  private buildOptions(settings: Partial<OllamaOptions>): Partial<Options> {
+    return {
+      ...settings,
+      stop: settings.stop ? settings.stop.split(',') : undefined,
+    };
+  }
+
+  /**
+   * Merges options
+   * @param partialOptions - Options to override.
+   * @param globalDefaults - Global Settings Options.
+   * @returns Options
+   */
+  private mergeOptions(
+    partialOptions: Partial<Options>,
+    globalDefaults: Partial<Options>,
+  ): Partial<Options> {
+    const mergedOptions: Partial<Options> = { ...globalDefaults };
+
+    for (const key in partialOptions) {
+      if (partialOptions.hasOwnProperty(key)) {
+        const value = partialOptions[key];
+        if (value !== '' && value !== null) {
+          mergedOptions[key] = value;
+        }
+      }
+    }
+
+    return mergedOptions;
+  }
+
+  /**
    * Generates a response using LLM
    *
    * @param prompt - The input text from the user
@@ -64,16 +105,33 @@ export default class OllamaLlmHelper
    */
   async generateResponse(
     prompt: string,
-    model: string,
-    system: string,
-    { keepAlive = '5m', options = {} },
+    model: string = '',
+    system: string = '',
+    {
+      keepAlive,
+      options,
+    }: { keepAlive: string; options: Partial<OllamaOptions> } = {
+      keepAlive: '5m',
+      options: {},
+    },
   ): Promise<string> {
+    const {
+      api_url: _apiUrl,
+      model: _model,
+      keep_alive: _keepAlive,
+      ...globalSettings
+    } = await this.getSettings();
+    const opts = this.mergeOptions(
+      this.buildOptions(options),
+      this.buildOptions(globalSettings),
+    );
     const response = await this.client.generate({
-      model,
+      model: model || _model,
       prompt,
       system,
-      keep_alive: keepAlive,
-      options,
+      keep_alive: keepAlive || _keepAlive,
+      options: opts,
+      stream: false,
     });
 
     return response.response ? response.response : '';
@@ -103,15 +161,31 @@ export default class OllamaLlmHelper
    * @param prompt - The input text from the user
    * @param model - The model to be used
    * @param history - Array of messages
-   * @returns {Promise<string>} - The generated response from the LLM
+   * @returns The generated response from the LLM
    */
   public async generateChatCompletion(
     prompt: string,
     model: string,
     systemPrompt: string,
     history: AnyMessage[] = [],
-    { keepAlive = '5m', options = {} },
+    {
+      keepAlive,
+      options,
+    }: { keepAlive: string; options: Partial<OllamaOptions> } = {
+      keepAlive: '5m',
+      options: {},
+    },
   ) {
+    const {
+      api_url: _apiUrl,
+      model: _model,
+      keep_alive: _keepAlive,
+      ...globalSettings
+    } = await this.getSettings();
+    const opts = this.mergeOptions(
+      this.buildOptions(options),
+      this.buildOptions(globalSettings),
+    );
     const response = await this.client.chat({
       model,
       messages: [
@@ -125,8 +199,9 @@ export default class OllamaLlmHelper
           content: prompt,
         },
       ],
-      keep_alive: keepAlive,
-      options,
+      keep_alive: keepAlive || _keepAlive,
+      options: opts,
+      stream: false,
     });
 
     return response.message.content ? response.message.content : '';
