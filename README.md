@@ -21,7 +21,7 @@ The Hexabot Docker Compose file for Ollama is located under the `docker` folder.
 Once Ollama is installed, make sure to enable the Ollama server when running Hexabot:
 
 ```sh
-npx hexabot dev --enable=ollama
+hexabot dev --services ollama
 ```
 
 Also, ensure to SSH into the container and pull the model(s) you would like to use:
@@ -37,9 +37,9 @@ Try different models, Ollama models can be found on the Ollama library : https:/
 To use the **Ollama Helper** extension within Hexabot, follow these steps:
 
 ```sh
-cd ~/projects/Hexabot
-npm install hexabot-helper-ollama --prefix ./api
-npx hexabot dev --enable=ollama
+cd ~/projects/my-chatbot
+npm install hexabot-helper-ollama
+hexabot dev --services ollama
 ```
 
 ## Configuration Settings

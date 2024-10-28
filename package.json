@@ -5,6 +5,9 @@
   "dependencies": {
     "ollama": "^0.5.9"
   },
+  "scripts": {
+    "release": "npm version patch && git push origin --tags && npm publish"
+  },
   "author": "Hexastack",
   "license": "AGPL-3.0-only"
 }
