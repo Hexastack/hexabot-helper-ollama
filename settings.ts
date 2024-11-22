@@ -22,6 +22,7 @@ export default [
     group: OLLAMA_HELPER_NAMESPACE,
     type: SettingType.text,
     value: 'http://ollama:11434', // Default value
+    translatable: false,
   },
   {
     label: 'model',
@@ -34,6 +35,7 @@ export default [
     group: OLLAMA_HELPER_NAMESPACE,
     type: SettingType.text,
     value: '5m', // Default value for keeping the model in memory
+    translatable: false,
   },
   {
     label: 'mirostat',
@@ -41,6 +43,7 @@ export default [
     subgroup: 'options',
     type: SettingType.number,
     value: 0, // Default: disabled
+    translatable: false,
   },
   {
     label: 'mirostat_eta',
@@ -48,6 +51,7 @@ export default [
     subgroup: 'options',
     type: SettingType.number,
     value: 0.1, // Default value
+    translatable: false,
   },
   {
     label: 'mirostat_tau',
@@ -55,6 +59,7 @@ export default [
     subgroup: 'options',
     type: SettingType.number,
     value: 5.0, // Default value
+    translatable: false,
   },
   {
     label: 'num_ctx',
@@ -62,6 +67,7 @@ export default [
     subgroup: 'options',
     type: SettingType.number,
     value: 2048, // Default value
+    translatable: false,
   },
   {
     label: 'repeat_last_n',
@@ -69,6 +75,7 @@ export default [
     subgroup: 'options',
     type: SettingType.number,
     value: 64, // Default value
+    translatable: false,
   },
   {
     label: 'repeat_penalty',
@@ -76,6 +83,7 @@ export default [
     subgroup: 'options',
     type: SettingType.number,
     value: 1.1, // Default value
+    translatable: false,
   },
   {
     label: 'temperature',
@@ -83,6 +91,7 @@ export default [
     subgroup: 'options',
     type: SettingType.number,
     value: 0.8, // Default value
+    translatable: false,
   },
   {
     label: 'seed',
@@ -90,6 +99,7 @@ export default [
     subgroup: 'options',
     type: SettingType.number,
     value: 0, // Default value
+    translatable: false,
   },
   {
     label: 'stop',
@@ -97,6 +107,7 @@ export default [
     subgroup: 'options',
     type: SettingType.text,
     value: 'AI assistant:', // Default stop sequence
+    translatable: true,
   },
   {
     label: 'tfs_z',
@@ -104,6 +115,7 @@ export default [
     subgroup: 'options',
     type: SettingType.number,
     value: 1, // Default value, 1.0 means disabled
+    translatable: false,
   },
   {
     label: 'num_predict',
@@ -111,6 +123,7 @@ export default [
     subgroup: 'options',
     type: SettingType.number,
     value: 20, // Default value
+    translatable: false,
   },
   {
     label: 'top_k',
@@ -118,6 +131,7 @@ export default [
     subgroup: 'options',
     type: SettingType.number,
     value: 40, // Default value
+    translatable: false,
   },
   {
     label: 'top_p',
@@ -125,6 +139,7 @@ export default [
     subgroup: 'options',
     type: SettingType.number,
     value: 0.9, // Default value
+    translatable: false,
   },
   {
     label: 'min_p',
@@ -132,5 +147,6 @@ export default [
     subgroup: 'options',
     type: SettingType.number,
     value: 0.0, // Default value
+    translatable: false,
   },
 ] as const satisfies HelperSetting<typeof OLLAMA_HELPER_NAME>[];
