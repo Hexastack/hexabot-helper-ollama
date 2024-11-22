@@ -29,6 +29,7 @@ export default [
     group: OLLAMA_HELPER_NAMESPACE,
     type: SettingType.text,
     value: 'llama3.2', // Default model
+    translatable: false,
   },
   {
     label: 'keep_alive',
