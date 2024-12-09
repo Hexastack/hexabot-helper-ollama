@@ -6,7 +6,10 @@
     "ollama": "^0.5.9"
   },
   "scripts": {
-    "release": "npm version patch && git push origin --tags && npm publish"
+    "release:common": "git push origin --tags && npm publish",
+    "release:patch": "npm version patch && npm run release:common",
+    "release:minor": "npm version minor && npm run release:common",
+    "release": "echo 'Please specify patch or minor: npm run release:patch or npm run release:minor'"
   },
   "author": "Hexastack",
   "license": "AGPL-3.0-only"
