@@ -18,6 +18,8 @@ Ollama makes it easy to get up and running with large language models locally. p
 
 The Hexabot Docker Compose file for Ollama is located under the `docker` folder. By default, the configuration uses the CPU, but you can also use a GPU for better performance. Please refer to the official Ollama Docker documentation : https://hub.docker.com/r/ollama/ollama
 
+Note that structured responses are supported starting Ollama v0.5.1.
+
 Once Ollama is installed, make sure to enable the Ollama server when running Hexabot:
 
 ```sh
