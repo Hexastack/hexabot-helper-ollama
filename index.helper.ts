@@ -13,6 +13,7 @@ import { Ollama, Options } from 'ollama';
 import { AnyMessage } from '@/chat/schemas/types/message';
 import { HelperService } from '@/helper/helper.service';
 import BaseLlmHelper from '@/helper/lib/base-llm-helper';
+import { LLM } from '@/helper/types';
 import { LoggerService } from '@/logger/logger.service';
 import { Setting } from '@/setting/schemas/setting.schema';
 import { SettingService } from '@/setting/services/setting.service';
@@ -135,6 +136,55 @@ export default class OllamaLlmHelper
     });
 
     return response.response ? response.response : '';
+  }
+
+  /**
+   * Generates a structured response from Ollama
+   *
+   * @param prompt - The input text from the user
+   * @param model - The model to be used
+   * @param systemPrompt - The input text from the system
+   * @param schema - The OpenAPI data schema
+   * @returns - The generated structured response from Ollama
+   */
+  async generateStructuredResponse<T>(
+    prompt: string,
+    model: string = '',
+    system: string = '',
+    schema: LLM.ResponseSchema,
+    {
+      keepAlive,
+      options,
+    }: { keepAlive: string; options: Partial<OllamaOptions> } = {
+      keepAlive: '5m',
+      options: {},
+    },
+  ): Promise<T> {
+    const {
+      api_url: _apiUrl,
+      model: _model,
+      keep_alive: _keepAlive,
+      ...globalSettings
+    } = await this.getSettings();
+    const opts = this.mergeOptions(
+      this.buildOptions(options),
+      this.buildOptions(globalSettings),
+    );
+    const response = await this.client.generate({
+      model: model || _model,
+      prompt,
+      system,
+      keep_alive: keepAlive || _keepAlive,
+      options: {
+        ...opts,
+        // Force temperature to be more deterministic
+        temperature: 0,
+      },
+      stream: false,
+      format: schema,
+    });
+
+    return JSON.parse(response.response) as T;
   }
 
   /**
