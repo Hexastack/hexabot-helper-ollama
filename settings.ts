@@ -110,7 +110,7 @@ export default [
     group: OLLAMA_HELPER_NAMESPACE,
     subgroup: 'options',
     type: SettingType.number,
-    value: 20, // Default value
+    value: 200, // Default value
   },
   {
     label: 'top_k',
