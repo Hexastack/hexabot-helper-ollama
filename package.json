@@ -1,6 +1,6 @@
 {
   "name": "hexabot-helper-ollama",
-  "version": "2.2.1",
+  "version": "2.2.2",
   "description": "The Ollama Helper Extension for Hexabot Chatbot / Agent Builder to enable the LLM Capability",
   "peerDependencies": {
     "ollama": "^0.5.9"
