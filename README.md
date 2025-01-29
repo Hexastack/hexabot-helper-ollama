@@ -86,6 +86,10 @@ You can use the helper to generate responses from the model based on user input:
 const response = await ollamaHelper.generateResponse(prompt, model, systemPrompt, options);
 console.log(response);
 ```
+##### Example 
+```typescript
+const response = await ollamaHelper.generateResponse('Where is Paris located?', 'llama3.2', 'You are a tourist assistant', { .... });
+```
 #### Parameters:
   - **prompt:** The user input or query for which a response is generated.
   - **model:** Specifies the language model to be used (e.g., "llama3.2").
@@ -114,7 +118,10 @@ console.log(response);
 const response = await ollamaHelper.generateStructuredResponse(prompt, model, systemPrompt, schema, options);
 console.log(response);
 ```
-
+##### Example 
+```typescript
+const response = await ollamaHelper.generateResponse('Where is Paris located?', 'llama3.2', 'You are a tourist assistant', {"type":"string","description":"Country of the input destination"}, { .... });
+```
 #### Parameters
 
 - **prompt:** The query or instruction provided to the model.
