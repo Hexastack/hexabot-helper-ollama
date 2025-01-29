@@ -88,7 +88,12 @@ console.log(response);
 ```
 ##### Example 
 ```typescript
-const response = await ollamaHelper.generateResponse('Where is Paris located?', 'llama3.2', 'You are a tourist assistant', { .... });
+const response = await ollamaHelper.generateResponse(
+  'Where is Paris located?',
+  'llama3.2',
+  'You are a tourist assistant',
+  {...}
+);
 ```
 #### Parameters:
   - **prompt:** The user input or query for which a response is generated.
@@ -120,7 +125,16 @@ console.log(response);
 ```
 ##### Example 
 ```typescript
-const response = await ollamaHelper.generateResponse('Where is Paris located?', 'llama3.2', 'You are a tourist assistant', {"type":"string","description":"Country of the input destination"}, { .... });
+const response = await ollamaHelper.generateResponse(
+  'Where is Paris located?',
+  'llama3.2',
+  'You are a tourist assistant',
+  {
+    type: 'string',
+    description: 'Country of the input destination'
+  },
+  {...}
+);
 ```
 #### Parameters
 
