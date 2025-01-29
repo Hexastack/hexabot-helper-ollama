@@ -86,6 +86,20 @@ You can use the helper to generate responses from the model based on user input:
 const response = await ollamaHelper.generateResponse(prompt, model, systemPrompt, options);
 console.log(response);
 ```
+##### Example 
+```typescript
+const response = await ollamaHelper.generateResponse(
+  'Where is Paris located?',
+  'llama3.2',
+  'You are a tourist assistant',
+  {...}
+);
+```
+#### Parameters:
+  - **prompt:** The user input or query for which a response is generated.
+  - **model:** Specifies the language model to be used (e.g., "llama3.2").
+  - **systemPrompt:** A system instruction that sets the behavior or tone of the model's response.
+  - **options:** Additional settings, such as temperature, max tokens, or other configurations.
 
 ### 2. Generate a Chat Completion
 
@@ -94,6 +108,62 @@ This method uses conversation history to generate a contextual response:
 ```typescript
 const response = await ollamaHelper.generateChatCompletion(prompt, model, systemPrompt, history, options);
 console.log(response);
+```
+#### Parameters: 
+
+- **prompt:** The latest user input in a conversation.
+- **model:** The name of the language model used for generating responses.
+- **systemPrompt:** Instructions that help guide the model's response.
+- **history:** A conversation history consisting of previous exchanges, ensuring context-aware responses.
+- **options:** Custom parameters for model behavior, such as response length, temperature, or stop sequences.
+
+### 3. Generate a Structured Response
+
+```typescript
+const response = await ollamaHelper.generateStructuredResponse(prompt, model, systemPrompt, schema, options);
+console.log(response);
+```
+##### Example 
+```typescript
+const response = await ollamaHelper.generateResponse(
+  'Where is Paris located?',
+  'llama3.2',
+  'You are a tourist assistant',
+  {
+    type: 'string',
+    description: 'Country of the input destination'
+  },
+  {...}
+);
+```
+#### Parameters
+
+- **prompt:** The query or instruction provided to the model.
+- **model:** The model used for structured response generation.
+- **systemPrompt:** Guidelines for formatting or structuring the response.
+- **schema:**  Defines the expected structure of the response.
+- **options:** Additional configurations like response constraints or output format.
+
+### Example Integration 
+
+To use the Ollama Helper, simply inject the OllamaLlmHelper class and use it as shown below:
+
+```typescript
+const ollamaHelper = this.helperService.use(
+  HelperType.LLM,
+  OllamaLlmHelper,
+);
+// ...
+const text = await ollamaHelper.generateChatCompletion(
+  context.text,
+  args.model,
+  systemPrompt,
+  history,
+  {
+    keepAlive: keep_alive,
+    options,
+  },
+);
 ```
 
 ## Contributing
